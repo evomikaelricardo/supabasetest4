@@ -358,11 +358,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // If existingIncident is empty or null, select from CustomerTag table
           const selectedCustomerTag = await storage.getCustomerTagByTagid(inserted_tagid);
           
+          // If selectedCustomerTag is not empty or null, get the customer
+          let selectedCustomer = null;
+          if (selectedCustomerTag && selectedCustomerTag.customer_id) {
+            selectedCustomer = await storage.getCustomerById(selectedCustomerTag.customer_id);
+          }
+          
           return res.json({
             sender,
             message,
             inserted_tagid,
             selectedCustomerTag,
+            selectedCustomer,
           });
         }
       }
