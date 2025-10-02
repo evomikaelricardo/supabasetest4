@@ -49,6 +49,8 @@ export interface IStorage {
   getPreferencesByCustomerId(customerId: string): Promise<Preference[]>;
   updatePreference(id: string, data: UpdatePreference): Promise<Preference | undefined>;
   deletePreference(id: string): Promise<void>;
+
+  getCustomerTagByTagid(tagid: string): Promise<any | undefined>;
 }
 
 export class SupabaseStorage implements IStorage {
@@ -785,6 +787,19 @@ export class SupabaseStorage implements IStorage {
       .eq('id', id);
 
     if (error) throw error;
+  }
+
+  async getCustomerTagByTagid(tagid: string): Promise<any | undefined> {
+    const { data, error } = await this.supabase
+      .from('CustomerTag')
+      .select()
+      .eq('tagid', tagid)
+      .single();
+
+    if (error && error.code !== 'PGRST116') throw error;
+    if (!data) return undefined;
+
+    return data;
   }
 }
 

@@ -354,6 +354,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const existingIncident = await storage.getIncidentByTagid(inserted_tagid);
         if (existingIncident) {
           return res.json(existingIncident);
+        } else {
+          // If existingIncident is empty or null, select from CustomerTag table
+          const selectedCustomerTag = await storage.getCustomerTagByTagid(inserted_tagid);
+          
+          return res.json({
+            sender,
+            message,
+            inserted_tagid,
+            selectedCustomerTag,
+          });
         }
       }
 
