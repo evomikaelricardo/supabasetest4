@@ -389,6 +389,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             selectedCustomerTag,
             selectedCustomer,
           });
+        } else {
+          return res.json({});
         }
       }
 
