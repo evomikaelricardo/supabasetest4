@@ -37,6 +37,7 @@ export interface IStorage {
 
   createIncident(data: InsertIncident): Promise<Incident>;
   getIncident(id: string): Promise<Incident | undefined>;
+  getIncidentByTagid(tagid: string): Promise<Incident | undefined>;
   getAllIncidents(): Promise<Incident[]>;
   getIncidentsByCustomerId(customerId: string): Promise<Incident[]>;
   updateIncident(id: string, data: UpdateIncident): Promise<Incident | undefined>;
@@ -559,6 +560,25 @@ export class SupabaseStorage implements IStorage {
       .from('Incident')
       .select()
       .eq('id', id)
+      .single();
+
+    if (error && error.code !== 'PGRST116') throw error;
+    if (!data) return undefined;
+
+    return {
+      id: data.id,
+      owner: data.owner,
+      finder: data.finder,
+      tagid: data.tagid,
+      createdAt: new Date(data.created_at),
+    };
+  }
+
+  async getIncidentByTagid(tagid: string): Promise<Incident | undefined> {
+    const { data, error } = await this.supabase
+      .from('Incident')
+      .select()
+      .eq('tagid', tagid)
       .single();
 
     if (error && error.code !== 'PGRST116') throw error;

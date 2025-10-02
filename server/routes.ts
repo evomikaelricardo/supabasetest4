@@ -349,6 +349,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
+      // If inserted_tagid is not empty or null, check if it exists in incident table
+      if (inserted_tagid) {
+        const existingIncident = await storage.getIncidentByTagid(inserted_tagid);
+        if (existingIncident) {
+          return res.json(existingIncident);
+        }
+      }
+
       res.json({
         sender,
         message,
