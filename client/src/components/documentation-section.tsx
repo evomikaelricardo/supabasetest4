@@ -75,7 +75,7 @@ export function DocumentationSection() {
                     <pre className="p-3 bg-muted rounded-md border text-sm font-mono overflow-x-auto">
 {`{
   "name": "John Doe",
-  "userid": "550e8400-e29b-41d4-a716-446655440000",
+  "tagid": "550e8400-e29b-41d4-a716-446655440000",
   "mailingAddress": "123 Main St, City, State 12345",
   "phoneNo": "+1-555-0123"
 }`}
@@ -86,7 +86,7 @@ export function DocumentationSection() {
 {`{
   "id": 1,
   "name": "John Doe",
-  "userid": "550e8400-e29b-41d4-a716-446655440000",
+  "tagid": "550e8400-e29b-41d4-a716-446655440000",
   "mailingAddress": "123 Main St, City, State 12345",
   "phoneNo": "+1-555-0123",
   "createdAt": "2025-01-20T10:30:00.000Z"
@@ -168,7 +168,7 @@ export function DocumentationSection() {
   "message": "Hello, how can I help you?",
   "recipient": "user_456",
   "sender": "agent_789",
-  "userid": "user_456"
+  "tagid": "user_456"
 }`}
                     </pre>
                   </TabsContent>
@@ -181,7 +181,7 @@ export function DocumentationSection() {
   "message": "Hello, how can I help you?",
   "recipient": "user_456",
   "sender": "agent_789",
-  "userid": "user_456",
+  "tagid": "user_456",
   "createdAt": "2025-01-20T10:30:00.000Z"
 }`}
                     </pre>
@@ -207,7 +207,7 @@ export function DocumentationSection() {
   "message": "Updated message",
   "recipient": "new_recipient",
   "sender": "new_sender",
-  "userid": "new_user_id"
+  "tagid": "new_user_id"
 }`}
                     </pre>
                   </TabsContent>
@@ -260,7 +260,7 @@ export function DocumentationSection() {
 {`{
   "owner": "John Doe",
   "finder": "Jane Smith",
-  "userid": "550e8400-e29b-41d4-a716-446655440000"
+  "tagid": "550e8400-e29b-41d4-a716-446655440000"
 }`}
                     </pre>
                   </TabsContent>
@@ -270,7 +270,7 @@ export function DocumentationSection() {
   "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "owner": "John Doe",
   "finder": "Jane Smith",
-  "userid": "550e8400-e29b-41d4-a716-446655440000",
+  "tagid": "550e8400-e29b-41d4-a716-446655440000",
   "createdAt": "2025-01-20T10:30:00.000Z"
 }`}
                     </pre>
@@ -293,7 +293,7 @@ export function DocumentationSection() {
 {`{
   "owner": "Updated Owner",
   "finder": "Updated Finder",
-  "userid": "550e8400-e29b-41d4-a716-446655440001"
+  "tagid": "550e8400-e29b-41d4-a716-446655440001"
 }`}
                     </pre>
                   </TabsContent>
@@ -346,7 +346,7 @@ export function DocumentationSection() {
 {`{
   "description": "User theme preference",
   "selectedValue": "dark",
-  "userid": "550e8400-e29b-41d4-a716-446655440000"
+  "tagid": "550e8400-e29b-41d4-a716-446655440000"
 }`}
                     </pre>
                   </TabsContent>
@@ -356,7 +356,7 @@ export function DocumentationSection() {
   "id": "b1c2d3e4-f5a6-7890-bcde-f12345678901",
   "description": "User theme preference",
   "selectedValue": "dark",
-  "userid": "550e8400-e29b-41d4-a716-446655440000",
+  "tagid": "550e8400-e29b-41d4-a716-446655440000",
   "createdAt": "2025-01-20T10:30:00.000Z",
   "updatedAt": "2025-01-20T10:30:00.000Z"
 }`}
@@ -380,7 +380,7 @@ export function DocumentationSection() {
 {`{
   "description": "Updated preference description",
   "selectedValue": "light",
-  "userid": "550e8400-e29b-41d4-a716-446655440001"
+  "tagid": "550e8400-e29b-41d4-a716-446655440001"
 }`}
                     </pre>
                   </TabsContent>

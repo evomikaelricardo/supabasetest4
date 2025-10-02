@@ -122,7 +122,7 @@ export function ApiPlayground() {
               id="request-body"
               value={requestBody}
               onChange={(e) => setRequestBody(e.target.value)}
-              placeholder='{"name": "John Doe", "userid": "550e8400-e29b-41d4-a716-446655440000", "mailingAddress": "123 Main St"}'
+              placeholder='{"name": "John Doe", "tagid": "550e8400-e29b-41d4-a716-446655440000", "mailingAddress": "123 Main St"}'
               className="font-mono"
               rows={4}
               data-testid="textarea-request-body"

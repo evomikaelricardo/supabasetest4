@@ -202,9 +202,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/conversation-memory", authenticateToken, async (req, res) => {
     try {
-      const { customerId, recipient, sender, waName, userid } = req.query;
+      const { customerId, recipient, sender, waName, tagid } = req.query;
       
-      const hasFilters = customerId || recipient || sender || waName || userid;
+      const hasFilters = customerId || recipient || sender || waName || tagid;
       
       if (hasFilters) {
         const filters: any = {};
@@ -212,7 +212,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (recipient && typeof recipient === 'string') filters.recipient = recipient;
         if (sender && typeof sender === 'string') filters.sender = sender;
         if (waName && typeof waName === 'string') filters.waName = waName;
-        if (userid && typeof userid === 'string') filters.userid = userid;
+        if (tagid && typeof tagid === 'string') filters.tagid = tagid;
         
         const memories = await storage.filterConversationMemories(filters);
         return res.json(memories);

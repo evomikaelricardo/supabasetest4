@@ -22,7 +22,7 @@ export const items = pgTable("items", {
 export const customers = pgTable("Customer", {
   id: serial("id").primaryKey(),
   name: text("name"),
-  userid: uuid("userid"),
+  tagid: uuid("tagid"),
   mailingAddress: text("mailing_address"),
   phoneNo: text("phone_no"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -35,7 +35,7 @@ export const conversationMemory = pgTable("ConversationMemory", {
   message: text("message"),
   recipient: text("recipient"),
   sender: text("sender"),
-  userid: varchar("userid"),
+  tagid: varchar("tagid"),
   waName: text("wa_name"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
@@ -44,7 +44,7 @@ export const incidents = pgTable("Incident", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   owner: text("owner"),
   finder: text("finder"),
-  userid: varchar("userid"),
+  tagid: varchar("tagid"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -52,7 +52,7 @@ export const preferences = pgTable("Preference", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   description: text("description"),
   selectedValue: text("selected_value"),
-  userid: varchar("userid"),
+  tagid: varchar("tagid"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

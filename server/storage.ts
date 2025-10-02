@@ -31,7 +31,7 @@ export interface IStorage {
   getConversationMemory(id: string): Promise<ConversationMemory | undefined>;
   getAllConversationMemories(): Promise<ConversationMemory[]>;
   getConversationMemoriesByCustomerId(customerId: string): Promise<ConversationMemory[]>;
-  filterConversationMemories(filters: { customerId?: string; recipient?: string; sender?: string; waName?: string; userid?: string }): Promise<ConversationMemory[]>;
+  filterConversationMemories(filters: { customerId?: string; recipient?: string; sender?: string; waName?: string; tagid?: string }): Promise<ConversationMemory[]>;
   updateConversationMemory(id: string, data: UpdateConversationMemory): Promise<ConversationMemory | undefined>;
   deleteConversationMemory(id: string): Promise<void>;
 
@@ -247,7 +247,7 @@ export class SupabaseStorage implements IStorage {
   async createCustomer(data: InsertCustomer): Promise<Customer> {
     const dbData: any = {};
     if (data.name !== undefined) dbData.name = data.name;
-    if (data.userid !== undefined) dbData.userid = data.userid;
+    if (data.tagid !== undefined) dbData.tagid = data.tagid;
     if (data.mailingAddress !== undefined) dbData.mailing_address = data.mailingAddress;
     if (data.phoneNo !== undefined) dbData.phone_no = data.phoneNo;
 
@@ -262,7 +262,7 @@ export class SupabaseStorage implements IStorage {
     return {
       id: result.id,
       name: result.name,
-      userid: result.userid,
+      tagid: result.tagid,
       mailingAddress: result.mailing_address,
       phoneNo: result.phone_no,
       createdAt: new Date(result.created_at),
@@ -282,7 +282,7 @@ export class SupabaseStorage implements IStorage {
     return {
       id: data.id,
       name: data.name,
-      userid: data.userid,
+      tagid: data.tagid,
       mailingAddress: data.mailing_address,
       phoneNo: data.phone_no,
       createdAt: new Date(data.created_at),
@@ -301,7 +301,7 @@ export class SupabaseStorage implements IStorage {
     return data.map(row => ({
       id: row.id,
       name: row.name,
-      userid: row.userid,
+      tagid: row.tagid,
       mailingAddress: row.mailing_address,
       phoneNo: row.phone_no,
       createdAt: new Date(row.created_at),
@@ -312,7 +312,7 @@ export class SupabaseStorage implements IStorage {
     const dbData: any = {};
 
     if ('name' in data && data.name !== undefined) dbData.name = data.name;
-    if ('userid' in data && data.userid !== undefined) dbData.userid = data.userid;
+    if ('tagid' in data && data.tagid !== undefined) dbData.tagid = data.tagid;
     if ('mailingAddress' in data && data.mailingAddress !== undefined) dbData.mailing_address = data.mailingAddress;
     if ('phoneNo' in data && data.phoneNo !== undefined) dbData.phone_no = data.phoneNo;
 
@@ -329,7 +329,7 @@ export class SupabaseStorage implements IStorage {
     return {
       id: result.id,
       name: result.name,
-      userid: result.userid,
+      tagid: result.tagid,
       mailingAddress: result.mailing_address,
       phoneNo: result.phone_no,
       createdAt: new Date(result.created_at),
@@ -355,7 +355,7 @@ export class SupabaseStorage implements IStorage {
     if (data.message !== undefined) dbData.message = data.message;
     if (data.recipient !== undefined) dbData.recipient = data.recipient;
     if (data.sender !== undefined) dbData.sender = data.sender;
-    if (data.userid !== undefined) dbData.userid = data.userid;
+    if (data.tagid !== undefined) dbData.tagid = data.tagid;
     if (data.waName !== undefined) dbData.wa_name = data.waName;
 
     const { data: result, error } = await this.supabase
@@ -373,7 +373,7 @@ export class SupabaseStorage implements IStorage {
       message: result.message,
       recipient: result.recipient,
       sender: result.sender,
-      userid: result.userid,
+      tagid: result.tagid,
       waName: result.wa_name,
       createdAt: new Date(result.created_at),
     };
@@ -396,7 +396,7 @@ export class SupabaseStorage implements IStorage {
       message: data.message,
       recipient: data.recipient,
       sender: data.sender,
-      userid: data.userid,
+      tagid: data.tagid,
       waName: data.wa_name,
       createdAt: new Date(data.created_at),
     };
@@ -418,7 +418,7 @@ export class SupabaseStorage implements IStorage {
       message: row.message,
       recipient: row.recipient,
       sender: row.sender,
-      userid: row.userid,
+      tagid: row.tagid,
       waName: row.wa_name,
       createdAt: new Date(row.created_at),
     }));
@@ -441,13 +441,13 @@ export class SupabaseStorage implements IStorage {
       message: row.message,
       recipient: row.recipient,
       sender: row.sender,
-      userid: row.userid,
+      tagid: row.tagid,
       waName: row.wa_name,
       createdAt: new Date(row.created_at),
     }));
   }
 
-  async filterConversationMemories(filters: { customerId?: string; recipient?: string; sender?: string; waName?: string; userid?: string }): Promise<ConversationMemory[]> {
+  async filterConversationMemories(filters: { customerId?: string; recipient?: string; sender?: string; waName?: string; tagid?: string }): Promise<ConversationMemory[]> {
     let query = this.supabase
       .from('ConversationMemory')
       .select()
@@ -465,8 +465,8 @@ export class SupabaseStorage implements IStorage {
     if (filters.waName) {
       query = query.eq('wa_name', filters.waName);
     }
-    if (filters.userid) {
-      query = query.eq('userid', filters.userid);
+    if (filters.tagid) {
+      query = query.eq('tagid', filters.tagid);
     }
 
     const { data, error } = await query;
@@ -481,7 +481,7 @@ export class SupabaseStorage implements IStorage {
       message: row.message,
       recipient: row.recipient,
       sender: row.sender,
-      userid: row.userid,
+      tagid: row.tagid,
       waName: row.wa_name,
       createdAt: new Date(row.created_at),
     }));
@@ -495,7 +495,7 @@ export class SupabaseStorage implements IStorage {
     if (data.message !== undefined) dbData.message = data.message;
     if (data.recipient !== undefined) dbData.recipient = data.recipient;
     if (data.sender !== undefined) dbData.sender = data.sender;
-    if (data.userid !== undefined) dbData.userid = data.userid;
+    if (data.tagid !== undefined) dbData.tagid = data.tagid;
     if (data.waName !== undefined) dbData.wa_name = data.waName;
 
     const { data: result, error } = await this.supabase
@@ -515,7 +515,7 @@ export class SupabaseStorage implements IStorage {
       message: result.message,
       recipient: result.recipient,
       sender: result.sender,
-      userid: result.userid,
+      tagid: result.tagid,
       waName: result.wa_name,
       createdAt: new Date(result.created_at),
     };
@@ -535,7 +535,7 @@ export class SupabaseStorage implements IStorage {
 
     if (data.owner !== undefined) dbData.owner = data.owner;
     if (data.finder !== undefined) dbData.finder = data.finder;
-    if (data.userid !== undefined) dbData.userid = data.userid;
+    if (data.tagid !== undefined) dbData.tagid = data.tagid;
 
     const { data: result, error } = await this.supabase
       .from('Incident')
@@ -549,7 +549,7 @@ export class SupabaseStorage implements IStorage {
       id: result.id,
       owner: result.owner,
       finder: result.finder,
-      userid: result.userid,
+      tagid: result.tagid,
       createdAt: new Date(result.created_at),
     };
   }
@@ -568,7 +568,7 @@ export class SupabaseStorage implements IStorage {
       id: data.id,
       owner: data.owner,
       finder: data.finder,
-      userid: data.userid,
+      tagid: data.tagid,
       createdAt: new Date(data.created_at),
     };
   }
@@ -586,7 +586,7 @@ export class SupabaseStorage implements IStorage {
       id: row.id,
       owner: row.owner,
       finder: row.finder,
-      userid: row.userid,
+      tagid: row.tagid,
       createdAt: new Date(row.created_at),
     }));
   }
@@ -595,7 +595,7 @@ export class SupabaseStorage implements IStorage {
     const { data, error } = await this.supabase
       .from('Incident')
       .select()
-      .eq('userid', customerId)
+      .eq('tagid', customerId)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -605,7 +605,7 @@ export class SupabaseStorage implements IStorage {
       id: row.id,
       owner: row.owner,
       finder: row.finder,
-      userid: row.userid,
+      tagid: row.tagid,
       createdAt: new Date(row.created_at),
     }));
   }
@@ -615,7 +615,7 @@ export class SupabaseStorage implements IStorage {
 
     if (data.owner !== undefined) dbData.owner = data.owner;
     if (data.finder !== undefined) dbData.finder = data.finder;
-    if (data.userid !== undefined) dbData.userid = data.userid;
+    if (data.tagid !== undefined) dbData.tagid = data.tagid;
 
     const { data: result, error } = await this.supabase
       .from('Incident')
@@ -631,7 +631,7 @@ export class SupabaseStorage implements IStorage {
       id: result.id,
       owner: result.owner,
       finder: result.finder,
-      userid: result.userid,
+      tagid: result.tagid,
       createdAt: new Date(result.created_at),
     };
   }
@@ -650,7 +650,7 @@ export class SupabaseStorage implements IStorage {
 
     if (data.description !== undefined) dbData.description = data.description;
     if (data.selectedValue !== undefined) dbData.selected_value = data.selectedValue;
-    if (data.userid !== undefined) dbData.userid = data.userid;
+    if (data.tagid !== undefined) dbData.tagid = data.tagid;
 
     const { data: result, error } = await this.supabase
       .from('Preference')
@@ -664,7 +664,7 @@ export class SupabaseStorage implements IStorage {
       id: result.id,
       description: result.description,
       selectedValue: result.selected_value,
-      userid: result.userid,
+      tagid: result.tagid,
       createdAt: new Date(result.created_at),
       updatedAt: new Date(result.updated_at),
     };
@@ -684,7 +684,7 @@ export class SupabaseStorage implements IStorage {
       id: data.id,
       description: data.description,
       selectedValue: data.selected_value,
-      userid: data.userid,
+      tagid: data.tagid,
       createdAt: new Date(data.created_at),
       updatedAt: new Date(data.updated_at),
     };
@@ -703,7 +703,7 @@ export class SupabaseStorage implements IStorage {
       id: row.id,
       description: row.description,
       selectedValue: row.selected_value,
-      userid: row.userid,
+      tagid: row.tagid,
       createdAt: new Date(row.created_at),
       updatedAt: new Date(row.updated_at),
     }));
@@ -713,7 +713,7 @@ export class SupabaseStorage implements IStorage {
     const { data, error } = await this.supabase
       .from('Preference')
       .select()
-      .eq('userid', customerId)
+      .eq('tagid', customerId)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -723,7 +723,7 @@ export class SupabaseStorage implements IStorage {
       id: row.id,
       description: row.description,
       selectedValue: row.selected_value,
-      userid: row.userid,
+      tagid: row.tagid,
       createdAt: new Date(row.created_at),
       updatedAt: new Date(row.updated_at),
     }));
@@ -736,7 +736,7 @@ export class SupabaseStorage implements IStorage {
 
     if (data.description !== undefined) dbData.description = data.description;
     if (data.selectedValue !== undefined) dbData.selected_value = data.selectedValue;
-    if (data.userid !== undefined) dbData.userid = data.userid;
+    if (data.tagid !== undefined) dbData.tagid = data.tagid;
 
     const { data: result, error } = await this.supabase
       .from('Preference')
@@ -752,7 +752,7 @@ export class SupabaseStorage implements IStorage {
       id: result.id,
       description: result.description,
       selectedValue: result.selected_value,
-      userid: result.userid,
+      tagid: result.tagid,
       createdAt: new Date(result.created_at),
       updatedAt: new Date(result.updated_at),
     };
