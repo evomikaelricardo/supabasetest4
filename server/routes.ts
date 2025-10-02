@@ -354,7 +354,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const existingIncident = await storage.getIncidentByTagid(inserted_tagid);
         if (existingIncident) {
           return res.json(existingIncident);
-        } else {
+        } 
+        else {
           // If existingIncident is empty or null, select from CustomerTag table
           const selectedCustomerTag = await storage.getCustomerTagByTagid(inserted_tagid);
           
@@ -370,35 +371,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
               owner: selectedCustomer.phoneNo || '',
               finder: sender,
               tagid: selectedCustomer.tagid || inserted_tagid,
-            });
-            
-            return res.json({
-              sender,
-              message,
-              inserted_tagid,
-              selectedCustomerTag,
-              selectedCustomer,
-              newIncident,
-            });
+            });            
+            return res.json({});
           }
-          
-          return res.json({
-            sender,
-            message,
-            inserted_tagid,
-            selectedCustomerTag,
-            selectedCustomer,
-          });
-        } else {
-          return res.json({});
+          else {
+            return res.json({});              
+          }          
         }
       }
-
-      res.json({
-        sender,
-        message,
-        inserted_tagid,
-      });
+      else {
+          res.json({});
+      }
+      
     } catch (error) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ error: error.errors });
