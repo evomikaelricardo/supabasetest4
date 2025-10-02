@@ -364,6 +364,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
             selectedCustomer = await storage.getCustomerById(selectedCustomerTag.customer_id);
           }
           
+          // If selectedCustomer is not empty or null, create a new incident
+          if (selectedCustomer) {
+            const newIncident = await storage.createIncident({
+              owner: selectedCustomer.phoneNo || '',
+              finder: sender,
+              tagid: selectedCustomer.tagid || inserted_tagid,
+            });
+            
+            return res.json({
+              sender,
+              message,
+              inserted_tagid,
+              selectedCustomerTag,
+              selectedCustomer,
+              newIncident,
+            });
+          }
+          
           return res.json({
             sender,
             message,
