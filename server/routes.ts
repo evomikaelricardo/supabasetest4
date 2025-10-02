@@ -328,6 +328,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Check Status Route
+  app.post("/api/incidents/checkstatus", authenticateToken, async (req, res) => {
+    try {
+      const checkStatusSchema = z.object({
+        sender: z.string(),
+        message: z.string(),
+      });
+
+      const { sender, message } = checkStatusSchema.parse(req.body);
+      
+      let inserted_tagid: string | null = null;
+      
+      // Check if message starts with "Tiket:[" and contains "]. Jangan hapus kode ini."
+      if (message.startsWith("Tiket:[") && message.includes("]. Jangan hapus kode ini.")) {
+        const startIndex = message.indexOf("[") + 1;
+        const endIndex = message.indexOf("]");
+        if (startIndex > 0 && endIndex > startIndex) {
+          inserted_tagid = message.substring(startIndex, endIndex);
+        }
+      }
+
+      res.json({
+        sender,
+        message,
+        inserted_tagid,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      res.status(500).json({ error: "Failed to check status" });
+    }
+  });
+
   // Preference Routes (Protected with Bearer token)
   app.post("/api/preferences", authenticateToken, async (req, res) => {
     try {
