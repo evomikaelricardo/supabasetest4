@@ -57,6 +57,16 @@ export const preferences = pgTable("Preference", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+export const chatMemory = pgTable("ChatMemory", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  customerId: varchar("customer_id"),
+  message: text("message"),
+  sender: text("sender"),
+  recipient: text("recipient"),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const insertApiTokenSchema = createInsertSchema(apiTokens).omit({
   id: true,
   token: true,
@@ -123,3 +133,14 @@ export const updatePreferenceSchema = insertPreferenceSchema.partial();
 export type InsertPreference = z.infer<typeof insertPreferenceSchema>;
 export type UpdatePreference = z.infer<typeof updatePreferenceSchema>;
 export type Preference = typeof preferences.$inferSelect;
+
+export const insertChatMemorySchema = createInsertSchema(chatMemory).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const updateChatMemorySchema = insertChatMemorySchema.partial();
+
+export type InsertChatMemory = z.infer<typeof insertChatMemorySchema>;
+export type UpdateChatMemory = z.infer<typeof updateChatMemorySchema>;
+export type ChatMemory = typeof chatMemory.$inferSelect;
