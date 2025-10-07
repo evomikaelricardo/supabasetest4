@@ -122,9 +122,9 @@ export function ApiPlayground() {
               id="request-body"
               value={requestBody}
               onChange={(e) => setRequestBody(e.target.value)}
-              placeholder='{"customerId": "cust_123", "message": "Hello!", "sender": "agent_001", "recipient": "customer_456", "metadata": {"channel": "web"}}'
+              placeholder='{"customerId": "cust_123", "message": "Hello, how can I help you today?", "sender": "agent_001", "recipient": "customer_456", "metadata": {"channel": "web", "sentiment": "positive", "tags": ["support", "inquiry"]}}'
               className="font-mono"
-              rows={4}
+              rows={6}
               data-testid="textarea-request-body"
             />
           </div>

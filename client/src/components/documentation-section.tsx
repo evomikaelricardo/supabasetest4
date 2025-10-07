@@ -437,7 +437,8 @@ export function DocumentationSection() {
   "recipient": "customer_456",
   "metadata": {
     "channel": "web",
-    "sentiment": "positive"
+    "sentiment": "positive",
+    "tags": ["support", "inquiry"]
   }
 }`}
                     </pre>
@@ -445,16 +446,17 @@ export function DocumentationSection() {
                   <TabsContent value="response">
                     <pre className="p-3 bg-muted rounded-md border text-sm font-mono overflow-x-auto">
 {`{
-  "id": "c1d2e3f4-g5h6-7890-ijkl-mn1234567890",
+  "id": "c1d2e3f4-5678-90ab-cdef-1234567890ab",
   "customerId": "cust_123",
   "message": "Hello, how can I help you today?",
   "sender": "agent_001",
   "recipient": "customer_456",
   "metadata": {
     "channel": "web",
-    "sentiment": "positive"
+    "sentiment": "positive",
+    "tags": ["support", "inquiry"]
   },
-  "createdAt": "2025-01-20T10:30:00.000Z"
+  "createdAt": "2025-10-07T09:30:00.000Z"
 }`}
                     </pre>
                   </TabsContent>
