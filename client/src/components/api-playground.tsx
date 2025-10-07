@@ -10,7 +10,7 @@ import { Play } from "lucide-react";
 
 export function ApiPlayground() {
   const [method, setMethod] = useState("GET");
-  const [endpoint, setEndpoint] = useState("/api/customers");
+  const [endpoint, setEndpoint] = useState("/api/chat-memory");
   const [bearerToken, setBearerToken] = useState("");
   const [requestBody, setRequestBody] = useState("");
   const [response, setResponse] = useState("");
@@ -96,7 +96,7 @@ export function ApiPlayground() {
               id="endpoint"
               value={endpoint}
               onChange={(e) => setEndpoint(e.target.value)}
-              placeholder="/api/customers"
+              placeholder="/api/chat-memory"
               data-testid="input-endpoint"
             />
           </div>
@@ -122,7 +122,7 @@ export function ApiPlayground() {
               id="request-body"
               value={requestBody}
               onChange={(e) => setRequestBody(e.target.value)}
-              placeholder='{"name": "John Doe", "tagid": "550e8400-e29b-41d4-a716-446655440000", "mailingAddress": "123 Main St"}'
+              placeholder='{"customerId": "cust_123", "message": "Hello!", "sender": "agent_001", "recipient": "customer_456", "metadata": {"channel": "web"}}'
               className="font-mono"
               rows={4}
               data-testid="textarea-request-body"
