@@ -13,7 +13,9 @@ import {
   insertIncidentSchema,
   updateIncidentSchema,
   insertPreferenceSchema,
-  updatePreferenceSchema
+  updatePreferenceSchema,
+  insertChatMemorySchema,
+  updateChatMemorySchema
 } from "@shared/schema";
 import { z } from "zod";
 
@@ -454,6 +456,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true });
     } catch (error) {
       res.status(500).json({ error: "Failed to delete preference" });
+    }
+  });
+
+  // ChatMemory Routes (Protected with Bearer token)
+  app.post("/api/chat-memory", authenticateToken, async (req, res) => {
+    try {
+      const data = insertChatMemorySchema.parse(req.body);
+      const chatMemory = await storage.createChatMemory(data);
+      res.status(201).json(chatMemory);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      console.error("Error creating chat memory:", error);
+      res.status(500).json({ error: "Failed to create chat memory" });
+    }
+  });
+
+  app.get("/api/chat-memory", authenticateToken, async (req, res) => {
+    try {
+      const { customerId } = req.query;
+      if (customerId && typeof customerId === 'string') {
+        const chatMemories = await storage.getChatMemoriesByCustomerId(customerId);
+        return res.json(chatMemories);
+      }
+      const chatMemories = await storage.getAllChatMemories();
+      res.json(chatMemories);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch chat memories" });
+    }
+  });
+
+  app.get("/api/chat-memory/:id", authenticateToken, async (req, res) => {
+    try {
+      const chatMemory = await storage.getChatMemory(req.params.id);
+      if (!chatMemory) {
+        return res.status(404).json({ error: "Chat memory not found" });
+      }
+      res.json(chatMemory);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch chat memory" });
+    }
+  });
+
+  app.patch("/api/chat-memory/:id", authenticateToken, async (req, res) => {
+    try {
+      const data = updateChatMemorySchema.parse(req.body);
+      const chatMemory = await storage.updateChatMemory(req.params.id, data);
+      if (!chatMemory) {
+        return res.status(404).json({ error: "Chat memory not found" });
+      }
+      res.json(chatMemory);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      res.status(500).json({ error: "Failed to update chat memory" });
+    }
+  });
+
+  app.delete("/api/chat-memory/:id", authenticateToken, async (req, res) => {
+    try {
+      await storage.deleteChatMemory(req.params.id);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete chat memory" });
     }
   });
 
