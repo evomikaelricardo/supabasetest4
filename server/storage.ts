@@ -4,7 +4,8 @@ import {
   type Customer, type InsertCustomer, type UpdateCustomer,
   type ConversationMemory, type InsertConversationMemory, type UpdateConversationMemory,
   type Incident, type InsertIncident, type UpdateIncident,
-  type Preference, type InsertPreference, type UpdatePreference
+  type Preference, type InsertPreference, type UpdatePreference,
+  type ChatMemory, type InsertChatMemory, type UpdateChatMemory
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 import { createClient } from '@supabase/supabase-js';
@@ -52,6 +53,13 @@ export interface IStorage {
 
   getCustomerTagByTagid(tagid: string): Promise<any | undefined>;
   getCustomerById(id: number): Promise<Customer | undefined>;
+
+  createChatMemory(data: InsertChatMemory): Promise<ChatMemory>;
+  getChatMemory(id: string): Promise<ChatMemory | undefined>;
+  getAllChatMemories(): Promise<ChatMemory[]>;
+  getChatMemoriesByCustomerId(customerId: string): Promise<ChatMemory[]>;
+  updateChatMemory(id: string, data: UpdateChatMemory): Promise<ChatMemory | undefined>;
+  deleteChatMemory(id: string): Promise<void>;
 }
 
 export class SupabaseStorage implements IStorage {
@@ -821,6 +829,135 @@ export class SupabaseStorage implements IStorage {
       phoneNo: data.phone_no,
       createdAt: new Date(data.created_at),
     };
+  }
+
+  async createChatMemory(data: InsertChatMemory): Promise<ChatMemory> {
+    const dbData: any = {};
+    
+    if (data.customerId !== undefined) dbData.customer_id = data.customerId;
+    if (data.message !== undefined) dbData.message = data.message;
+    if (data.sender !== undefined) dbData.sender = data.sender;
+    if (data.recipient !== undefined) dbData.recipient = data.recipient;
+    if (data.metadata !== undefined) dbData.metadata = data.metadata;
+
+    const { data: result, error } = await this.supabase
+      .from('ChatMemory')
+      .insert(dbData)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return {
+      id: result.id,
+      customerId: result.customer_id,
+      message: result.message,
+      sender: result.sender,
+      recipient: result.recipient,
+      metadata: result.metadata,
+      createdAt: new Date(result.created_at),
+    };
+  }
+
+  async getChatMemory(id: string): Promise<ChatMemory | undefined> {
+    const { data, error } = await this.supabase
+      .from('ChatMemory')
+      .select()
+      .eq('id', id)
+      .single();
+
+    if (error && error.code !== 'PGRST116') throw error;
+    if (!data) return undefined;
+
+    return {
+      id: data.id,
+      customerId: data.customer_id,
+      message: data.message,
+      sender: data.sender,
+      recipient: data.recipient,
+      metadata: data.metadata,
+      createdAt: new Date(data.created_at),
+    };
+  }
+
+  async getAllChatMemories(): Promise<ChatMemory[]> {
+    const { data, error } = await this.supabase
+      .from('ChatMemory')
+      .select()
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    if (!data) return [];
+
+    return data.map(row => ({
+      id: row.id,
+      customerId: row.customer_id,
+      message: row.message,
+      sender: row.sender,
+      recipient: row.recipient,
+      metadata: row.metadata,
+      createdAt: new Date(row.created_at),
+    }));
+  }
+
+  async getChatMemoriesByCustomerId(customerId: string): Promise<ChatMemory[]> {
+    const { data, error } = await this.supabase
+      .from('ChatMemory')
+      .select()
+      .eq('customer_id', customerId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    if (!data) return [];
+
+    return data.map(row => ({
+      id: row.id,
+      customerId: row.customer_id,
+      message: row.message,
+      sender: row.sender,
+      recipient: row.recipient,
+      metadata: row.metadata,
+      createdAt: new Date(row.created_at),
+    }));
+  }
+
+  async updateChatMemory(id: string, data: UpdateChatMemory): Promise<ChatMemory | undefined> {
+    const dbData: any = {};
+
+    if (data.customerId !== undefined) dbData.customer_id = data.customerId;
+    if (data.message !== undefined) dbData.message = data.message;
+    if (data.sender !== undefined) dbData.sender = data.sender;
+    if (data.recipient !== undefined) dbData.recipient = data.recipient;
+    if (data.metadata !== undefined) dbData.metadata = data.metadata;
+
+    const { data: result, error } = await this.supabase
+      .from('ChatMemory')
+      .update(dbData)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error && error.code !== 'PGRST116') throw error;
+    if (!result) return undefined;
+
+    return {
+      id: result.id,
+      customerId: result.customer_id,
+      message: result.message,
+      sender: result.sender,
+      recipient: result.recipient,
+      metadata: result.metadata,
+      createdAt: new Date(result.created_at),
+    };
+  }
+
+  async deleteChatMemory(id: string): Promise<void> {
+    const { error } = await this.supabase
+      .from('ChatMemory')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
   }
 }
 
