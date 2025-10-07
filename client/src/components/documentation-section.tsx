@@ -396,6 +396,104 @@ export function DocumentationSection() {
               </div>
             </div>
           </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Chat Memory</h3>
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <Badge variant="secondary">GET</Badge>
+                  <code className="text-sm font-mono">/api/chat-memory</code>
+                </div>
+                <p className="text-sm text-muted-foreground ml-16">Retrieve all chat memories</p>
+                <p className="text-sm text-muted-foreground ml-16">Query parameter: <code>?customerId=xxx</code> to filter by customer</p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <Badge variant="secondary">GET</Badge>
+                  <code className="text-sm font-mono">/api/chat-memory/:id</code>
+                </div>
+                <p className="text-sm text-muted-foreground ml-16">Retrieve a specific chat memory by ID</p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <Badge variant="secondary">POST</Badge>
+                  <code className="text-sm font-mono">/api/chat-memory</code>
+                </div>
+                <p className="text-sm text-muted-foreground ml-16">Create a new chat memory</p>
+                <Tabs defaultValue="request" className="ml-16">
+                  <TabsList>
+                    <TabsTrigger value="request">Request Body</TabsTrigger>
+                    <TabsTrigger value="response">Response</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="request">
+                    <pre className="p-3 bg-muted rounded-md border text-sm font-mono overflow-x-auto">
+{`{
+  "customerId": "cust_123",
+  "message": "Hello, how can I help you today?",
+  "sender": "agent_001",
+  "recipient": "customer_456",
+  "metadata": {
+    "channel": "web",
+    "sentiment": "positive"
+  }
+}`}
+                    </pre>
+                  </TabsContent>
+                  <TabsContent value="response">
+                    <pre className="p-3 bg-muted rounded-md border text-sm font-mono overflow-x-auto">
+{`{
+  "id": "c1d2e3f4-g5h6-7890-ijkl-mn1234567890",
+  "customerId": "cust_123",
+  "message": "Hello, how can I help you today?",
+  "sender": "agent_001",
+  "recipient": "customer_456",
+  "metadata": {
+    "channel": "web",
+    "sentiment": "positive"
+  },
+  "createdAt": "2025-01-20T10:30:00.000Z"
+}`}
+                    </pre>
+                  </TabsContent>
+                </Tabs>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <Badge variant="secondary">PATCH</Badge>
+                  <code className="text-sm font-mono">/api/chat-memory/:id</code>
+                </div>
+                <p className="text-sm text-muted-foreground ml-16">Update an existing chat memory (all fields are optional)</p>
+                <Tabs defaultValue="request" className="ml-16">
+                  <TabsList>
+                    <TabsTrigger value="request">Request Body</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="request">
+                    <pre className="p-3 bg-muted rounded-md border text-sm font-mono overflow-x-auto">
+{`{
+  "message": "Updated message content",
+  "metadata": {
+    "channel": "mobile",
+    "sentiment": "neutral"
+  }
+}`}
+                    </pre>
+                  </TabsContent>
+                </Tabs>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <Badge variant="secondary">DELETE</Badge>
+                  <code className="text-sm font-mono">/api/chat-memory/:id</code>
+                </div>
+                <p className="text-sm text-muted-foreground ml-16">Delete a chat memory</p>
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
